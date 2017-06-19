@@ -28,22 +28,30 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	filename:=h.Filename
+	fmt.Println("filename is ",filename)
 	defer f.Close()
 	t,err:=os.Create(UPLOAD_DIR+"/"+filename)
 /*
 */
-	fmt.Println(t)
+
 	if err!=nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		defer t.Close()
-		if _,err:=io.Copy(t,f); err!=nil {
+	defer t.Close()
+	if _,err:=io.Copy(t,f); err!=nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		http.Redirect(w, r, "/View?id="+filename,http.StatusInternalServerError)
+
+		fmt.Println("hello")
+		http.Redirect(w, r, "/view?id="+filename,http.StatusFound)
 	}
+  /* if r.Method==delete(map[typeA]typeB, typeA){
+
+
+   }
+*/
 }
 func viewHandle(w http.ResponseWriter,r *http.Request){
 
